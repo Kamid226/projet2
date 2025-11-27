@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - PharmarlinkBF</title>
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #2c7fb8;
+            --secondary-color: #7fcdbb;
+            --accent-color: #edf8b1;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --medium-gray: #ddd;
+            --dark-gray: #666;
+            --white: #fff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --border-radius: 8px;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px 24px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d6fa5;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+        }
+
+        /* Section d'inscription */
+        .inscription-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .inscription-container {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .inscription-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .inscription-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .inscription-header p {
+            color: var(--dark-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group input.error {
+            border-color: var(--error-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--medium-gray);
+        }
+
+        .divider span {
+            background-color: var(--white);
+            padding: 0 15px;
+            color: var(--dark-gray);
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            font-size: 1.2rem;
+        }
+
+        .social-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .inscription-container {
+                padding: 30px 20px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">PharmarlinkBF</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="connexion.html">Connexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section d'inscription -->
+    <section class="inscription-section">
+        <div class="container">
+            <div class="inscription-container">
+                <div class="inscription-header">
+                    <h1>Créer un compte</h1>
+                    <p>Rejoignez PharmarlinkBF pour aider vos proches au Burkina Faso</p>
+                </div>
+                
+                <form id="inscription-form">
+                    <div class="form-group">
+                        <label for="nom">Nom *</label>
+                        <input type="text" id="nom" name="nom" required>
+                        <div class="error-message" id="nom-error">Veuillez entrer votre nom</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prenom">Prénom *</label>
+                        <input type="text" id="prenom" name="prenom" required>
+                        <div class="error-message" id="prenom-error">Veuillez entrer votre prénom</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telephone">Téléphone (WhatsApp) *</label>
+                        <input type="tel" id="telephone" name="telephone" placeholder="Ex: +226 XX XX XX XX" required>
+                        <div class="error-message" id="telephone-error">Veuillez entrer un numéro de téléphone valide</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="email-error">Veuillez entrer une adresse e-mail valide</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Mot de passe *</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="error-message" id="password-error">Le mot de passe doit contenir au moins 8 caractères</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirmer le mot de passe *</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                        <div class="error-message" id="confirm-password-error">Les mots de passe ne correspondent pas</div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">Recevoir les actualités de PharmarlinkBF</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary submit-btn">S'inscrire</button>
+                    
+                    <div class="divider">
+                        <span>Ou s'inscrire avec</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <a href="#" class="social-btn">f</a>
+                        <a href="#" class="social-btn">G</a>
+                    </div>
+                    
+                    <div class="login-link">
+                        <p>Déjà inscrit? <a href="connexion.html">Connectez-vous ici</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PharmarlinkBF</h3>
+                    <p>Plateforme numérique dédiée à la diaspora burkinabè pour l'achat de médicaments avec livraison au Burkina Faso.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="#catalogue">Catalogue</a></li>
+                        <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+                        <li><a href="#zones-livraison">Zones de livraison</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#confidentialite">Politique de confidentialité</a></li>
+                        <li><a href="#conditions">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>Email: contact@pharmarlinkbf.bf</li>
+                        <li>Téléphone: +226 XX XX XX XX</li>
+                        <li>WhatsApp: +226 XX XX XX XX</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 PharmarlinkBF. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('inscription-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Réinitialiser les erreurs
+            document.querySelectorAll('.error-message').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('input').forEach(function(el) {
+                el.classList.remove('error');
+            });
+            
+            let isValid = true;
+            
+            // Validation du nom
+            const nom = document.getElementById('nom').value.trim();
+            if (nom === '') {
+                document.getElementById('nom-error').style.display = 'block';
+                document.getElementById('nom').classList.add('error');
+                isValid = false;
+            }
+            
+            // Validation du prénom
+            const prenom = document.getElementById('prenom').value.trim();
+            if (prenom === '') {
+                document.getElementById('prenom-error').style.display = 'block';
+                document.getElementById('prenom').classList.add('error');
+                isValid = false;
+            }
+            
+            // Validation du téléphone
+            const telephone = document.getElementById('telephone').value.trim();
+            const phoneRegex = /^(\+226|00226)?[0-9]{8}$/;
+            if (!phoneRegex.test(telephone.replace(/\s/g, ''))) {
+                document.getElementById('telephone-error').style.display = 'block';
+                document.getElementById('telephone').classList.add('error');
+                isValid = false;
+            }
+            
+            // Validation de l'email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('email-error').style.display = 'block';
+                document.getElementById('email').classList.add('error');
+                isValid = false;
+            }
+            
+            // Validation du mot de passe
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                document.getElementById('password-error').style.display = 'block';
+                document.getElementById('password').classList.add('error');
+                isValid = false;
+            }
+            
+            // Validation de la confirmation du mot de passe
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (password !== confirmPassword) {
+                document.getElementById('confirm-password-error').style.display = 'block';
+                document.getElementById('confirm-password').classList.add('error');
+                isValid = false;
+            }
+            
+            // Si le formulaire est valide, on peut le soumettre
+            if (isValid) {
+                // Ici, normalement, on enverrait les données au serveur
+                alert('Inscription réussie! Vous allez être redirigé vers la page de connexion.');
+                // Redirection vers la page de connexion après inscription réussie
+                setTimeout(function() {
+                    window.location.href = 'connexion.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
