@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmarlinkBF - Achat de médicaments pour vos proches au Burkina Faso</title>
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #2c7fb8;
+            --secondary-color: #7fcdbb;
+            --accent-color: #edf8b1;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --medium-gray: #ddd;
+            --dark-gray: #666;
+            --white: #fff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --border-radius: 8px;
+            --error-color: #e74c3c;
+            --success-color: #27ae60;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--white);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px 24px;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d6fa5;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+        }
+
+        /* Icône Panier */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .cart-icon:hover {
+            background-color: var(--light-gray);
+        }
+
+        .cart-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--primary-color);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--error-color);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Panier Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--white);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            flex-direction: column;
+        }
+
+        .cart-modal.open {
+            display: flex;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        .cart-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--dark-gray);
+        }
+
+        .cart-empty svg {
+            width: 60px;
+            height: 60px;
+            fill: var(--medium-gray);
+            margin-bottom: 15px;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-size: 0.8rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: var(--light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .item-quantity {
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background: none;
+            color: var(--error-color);
+            font-size: 1.2rem;
+            margin-left: auto;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cart-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success-color);
+            color: var(--white);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .continue-shopping {
+            text-align: center;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--light-gray);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        /* Catalogue Section */
+        .catalogue-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .search-box {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+
+        .search-box button {
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-stock {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: var(--white);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1002;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .cart-modal {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay pour le panier -->
+    <div class="overlay" id="cartOverlay"></div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+        <span>Produit ajouté au panier !</span>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">PharmarlinkBF</a>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#catalogue">Catalogue</a></li>
+                    <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+                    <li><a href="connexion.html">Connexion</a></li>
+                    <li><a href="inscription.html" class="btn-primary">Inscription</a></li>
+                    <!-- Icône Panier -->
+                    <li class="cart-icon" id="cartIcon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Panier Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2>Mon Panier</h2>
+            <button class="close-cart" id="closeCart">×</button>
+        </div>
+        <div class="cart-content" id="cartContent">
+            <!-- Le contenu du panier sera généré dynamiquement -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">0 FCFA</span>
+            </div>
+            <div class="cart-actions">
+                <button class="checkout-btn" id="checkoutBtn"><a href="paiement.html">Passer la commande</a></button>
+                <div class="continue-shopping" id="continueShopping">Continuer mes achats</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="container">
+            <h1>Achetez des médicaments pour vos proches au Burkina Faso</h1>
+            <p>PharmarlinkBF permet à la diaspora burkinabè d'acheter des médicaments avec livraison directe à leurs familles au Burkina Faso.</p>
+            <a href="#catalogue" class="btn-primary">Commander maintenant</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Nos garanties</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Sécurité</h3>
+                    <p>Paiements sécurisés et protection de vos données personnelles.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Transparence</h3>
+                    <p>Suivi en temps réel de vos commandes et factures détaillées.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Livraison certifiée</h3>
+                    <p>Livraison rapide et fiable partout au Burkina Faso.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍⚕️</div>
+                    <h3>Vérification par pharmaciens</h3>
+                    <p>Tous les médicaments sont vérifiés par des pharmaciens qualifiés.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalogue Section -->
+    <section id="catalogue">
+        <div class="container">
+            <h2>Catalogue de médicaments</h2>
+            
+            <!-- Filtres et recherche -->
+            <div class="catalogue-filters">
+                <div class="filter-group">
+                    <label for="category">Catégorie</label>
+                    <select id="category">
+                        <option value="">Toutes les catégories</option>
+                        <option value="analgesiques">Analgésiques</option>
+                        <option value="antibiotiques">Antibiotiques</option>
+                        <option value="vitamines">Vitamines</option>
+                        <option value="chroniques">Maladies chroniques</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="price">Prix</label>
+                    <select id="price">
+                        <option value="">Tous les prix</option>
+                        <option value="0-5000">0 - 5 000 FCFA</option>
+                        <option value="5000-10000">5 000 - 10 000 FCFA</option>
+                        <option value="10000+">Plus de 10 000 FCFA</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="availability">Disponibilité</label>
+                    <select id="availability">
+                        <option value="">Tous</option>
+                        <option value="in-stock">En stock</option>
+                        <option value="low-stock">Stock limité</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" placeholder="Rechercher un médicament...">
+                <button>🔍</button>
+            </div>
+            
+            <!-- Grille de produits -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Produit 1 -->
+                <div class="product-card" data-id="1" data-name="Paracétamol 500mg" data-price="1500" data-stock="10">
+                    <div class="product-image">Image du médicament</div>
+                    <div class="product-info">
+                        <div class="product-name">Paracétamol 500mg</div>
+                        <div class="product-price">1 500 FCFA</div>
+                        <div class="product-stock">En stock</div>
+                        <button class="add-to-cart">Ajouter au panier</button>
+                    </div>
+                </div>
+                
+                <!-- Produit 2 -->
+                <div class="product-card" data-id="2" data-name="Amoxicilline 500mg" data-price="3200" data-stock="5">
+                    <div class="product-image">Image du médicament</div>
+                    <div class="product-info">
+                        <div class="product-name">Amoxicilline 500mg</div>
+                        <div class="product-price">3 200 FCFA</div>
+                        <div class="product-stock">Stock limité</div>
+                        <button class="add-to-cart">Ajouter au panier</button>
+                    </div>
+                </div>
+                
+                <!-- Produit 3 -->
+                <div class="product-card" data-id="3" data-name="Vitamine C 1000mg" data-price="2800" data-stock="15">
+                    <div class="product-image">Image du médicament</div>
+                    <div class="product-info">
+                        <div class="product-name">Vitamine C 1000mg</div>
+                        <div class="product-price">2 800 FCFA</div>
+                        <div class="product-stock">En stock</div>
+                        <button class="add-to-cart">Ajouter au panier</button>
+                    </div>
+                </div>
+                
+                <!-- Produit 4 -->
+                <div class="product-card" data-id="4" data-name="Métformine 850mg" data-price="4500" data-stock="8">
+                    <div class="product-image">Image du médicament</div>
+                    <div class="product-info">
+                        <div class="product-name">Métformine 850mg</div>
+                        <div class="product-price">4 500 FCFA</div>
+                        <div class="product-stock">En stock</div>
+                        <button class="add-to-cart">Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PharmarlinkBF</h3>
+                    <p>Plateforme numérique dédiée à la diaspora burkinabè pour l'achat de médicaments avec livraison au Burkina Faso.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="#accueil">Accueil</a></li>
+                        <li><a href="#catalogue">Catalogue</a></li>
+                        <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+                        <li><a href="#zones-livraison">Zones de livraison</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#confidentialite">Politique de confidentialité</a></li>
+                        <li><a href="#conditions">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>Email: contact@pharmarlinkbf.bf</li>
+                        <li>Téléphone: +226 XX XX XX XX</li>
+                        <li>WhatsApp: +226 XX XX XX XX</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 PharmarlinkBF. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gestion du panier
+        class Cart {
+            constructor() {
+                this.items = JSON.parse(localStorage.getItem('cart')) || [];
+                this.updateCartDisplay();
+            }
+
+            addItem(productId, productName, productPrice, productImage = '') {
+                const existingItem = this.items.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    this.items.push({
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        image: productImage,
+                        quantity: 1
+                    });
+                }
+                
+                this.saveCart();
+                this.updateCartDisplay();
+                this.showToast(`${productName} ajouté au panier`);
+            }
+
+            removeItem(productId) {
+                this.items = this.items.filter(item => item.id !== productId);
+                this.saveCart();
+                this.updateCartDisplay();
+            }
+
+            updateQuantity(productId, newQuantity) {
+                if (newQuantity <= 0) {
+                    this.removeItem(productId);
+                    return;
+                }
+
+                const item = this.items.find(item => item.id === productId);
+                if (item) {
+                    item.quantity = newQuantity;
+                    this.saveCart();
+                    this.updateCartDisplay();
+                }
+            }
+
+            getTotalItems() {
+                return this.items.reduce((total, item) => total + item.quantity, 0);
+            }
+
+            getTotalPrice() {
+                return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            saveCart() {
+                localStorage.setItem('cart', JSON.stringify(this.items));
+            }
+
+            updateCartDisplay() {
+                const cartCount = document.getElementById('cartCount');
+                const cartContent = document.getElementById('cartContent');
+                const cartTotal = document.getElementById('cartTotal');
+
+                // Mettre à jour le compteur
+                cartCount.textContent = this.getTotalItems();
+
+                // Mettre à jour le contenu du panier
+                if (this.items.length === 0) {
+                    cartContent.innerHTML = `
+                        <div class="cart-empty">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                            </svg>
+                            <p>Votre panier est vide</p>
+                        </div>
+                    `;
+                } else {
+                    cartContent.innerHTML = `
+                        <div class="cart-items">
+                            ${this.items.map(item => `
+                                <div class="cart-item" data-id="${item.id}">
+                                    <div class="cart-item-image">Image</div>
+                                    <div class="cart-item-details">
+                                        <div class="cart-item-name">${item.name}</div>
+                                        <div class="cart-item-price">${item.price.toLocaleString()} FCFA</div>
+                                        <div class="cart-item-controls">
+                                            <div class="quantity-controls">
+                                                <button class="quantity-btn decrease-btn">-</button>
+                                                <span class="item-quantity">${item.quantity}</span>
+                                                <button class="quantity-btn increase-btn">+</button>
+                                            </div>
+                                            <button class="remove-item">🗑️</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                // Mettre à jour le total
+                cartTotal.textContent = `${this.getTotalPrice().toLocaleString()} FCFA`;
+            }
+
+            showToast(message) {
+                const toast = document.getElementById('toast');
+                const toastMessage = toast.querySelector('span');
+                
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Initialisation du panier
+        const cart = new Cart();
+
+        // Gestion des événements
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartIcon = document.getElementById('cartIcon');
+            const cartModal = document.getElementById('cartModal');
+            const closeCart = document.getElementById('closeCart');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const continueShopping = document.getElementById('continueShopping');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const productsGrid = document.getElementById('productsGrid');
+
+            // Ouvrir le panier
+            cartIcon.addEventListener('click', function() {
+                cartModal.classList.add('open');
+                cartOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Fermer le panier
+            function closeCartModal() {
+                cartModal.classList.remove('open');
+                cartOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
+            closeCart.addEventListener('click', closeCartModal);
+            cartOverlay.addEventListener('click', closeCartModal);
+            continueShopping.addEventListener('click', closeCartModal);
+
+            // Ajouter au panier
+            productsGrid.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const productCard = e.target.closest('.product-card');
+                    const productId = productCard.dataset.id;
+                    const productName = productCard.dataset.name;
+                    const productPrice = parseInt(productCard.dataset.price);
+                    
+                    cart.addItem(productId, productName, productPrice);
+                }
+            });
+
+            // Gérer les interactions dans le panier
+            document.getElementById('cartContent').addEventListener('click', function(e) {
+                const cartItem = e.target.closest('.cart-item');
+                if (!cartItem) return;
+
+                const productId = cartItem.dataset.id;
+
+                if (e.target.classList.contains('decrease-btn')) {
+                    const currentQuantity = parseInt(cartItem.querySelector('.item-quantity').textContent);
+                    cart.updateQuantity(productId, currentQuantity - 1);
+                } else if (e.target.classList.contains('increase-btn')) {
+                    const currentQuantity = parseInt(cartItem.querySelector('.item-quantity').textContent);
+                    cart.updateQuantity(productId, currentQuantity + 1);
+                } else if (e.target.classList.contains('remove-item')) {
+                    cart.removeItem(productId);
+                }
+            });
+
+            // Passer la commande
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.getTotalItems() === 0) {
+                    alert('Votre panier est vide');
+                    return;
+                }
+            });
+
+            // Menu mobile
+            document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+                document.querySelector('nav ul').classList.toggle('show');
+            });
+        });
+    </script>
+</body>
+</html>
